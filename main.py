@@ -5,7 +5,7 @@ import datetime
 
 from smbus import SMBus
 from RPi import GPIO
-from threading import Threading
+from threading import Thread
 
 addr = 0x48
 channel = 0b1000010
@@ -43,8 +43,8 @@ def main():
 	#watering_time
 	lighting_time = {'acthour':11, 'offhour':23}
 
-	#W = Threading(target=watering, args=(watering_time,))
-	L = Threading(target=lighting, args=(lighting_time,))
+	#W = Thread(target=watering, args=(watering_time,))
+	L = Thread(target=lighting, args=(lighting_time,))
 
 	#W.start()
 	L.start()
