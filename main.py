@@ -33,7 +33,7 @@ def watering(watering_time):
 			value = bus.read_byte(addr)
 
 			if 255-value == 0:			 # начинаем полив только если земля полностью сухая
-			logging.info("watering is on")
+				logging.info("watering is on")
 				while(255-value < wet_level):
 
 					GPIO.output(9, True) # включаем помпу на 3 секунды
@@ -41,7 +41,7 @@ def watering(watering_time):
 					GPIO.output(9, False)# выключаем
 					time.sleep(10)		 # ждем пока вода впитается в землю
 					value = bus.read_byte(addr) # считываем данные с модуля влажности почвы
-			logging.info("watering is off")
+				logging.info("watering is off")
 			else:
 				logging.warning("the plant is already watered")
 		time.sleep(1*60)
@@ -51,10 +51,10 @@ def lighting(lighting_time):
 	while(True):
 		if (datetime.datetime.now().hour == lighting_time['acthour']):
 			GPIO.output(10, True)
-			logging.info("lighting is on, time: ",datetime.datetime.now())
+			logging.info("lighting is on"
 		if (datetime.datetime.now().hour == lighting_time['offhour']):
 			GPIO.output(10, False)
-			logging.info("lighting is off, time:",datetime.datetime.now())
+			logging.info("lighting is off")
 		time.sleep(1*60)
 
 
