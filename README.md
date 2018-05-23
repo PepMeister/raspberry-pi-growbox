@@ -12,6 +12,16 @@
 sudo apt-get update
 sudo apt-get install -y python-smbus i2c-tools
 `
+### Установка и автозапуск
+
+`
+cd
+git clone https://github.com/PepMeister/raspberry-pi-growbox.git
+
+sudo echo "sudo python3 /home/pi/raspberry-pi-growbox/main.py" >> /etc/profile
+reboot
+`
+
 
 ### Внешние модули
 

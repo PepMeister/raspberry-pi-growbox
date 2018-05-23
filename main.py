@@ -55,11 +55,11 @@ def watering(watering_time):
 def lighting(lighting_time):
 	lighting.output = False #
 	while(True):
-		if (datetime.datetime.now().hour == lighting_time['acthour']) and lighting.output == False:
+		if (datetime.datetime.now().hour >= lighting_time['acthour']) and (datetime.datetime.now().hour <= lighting_time['offhour']) and lighting.output == False:
 			GPIO.output(10, True)
 			logging.info("lighting is on")
 			lighting.output = True
-		if (datetime.datetime.now().hour == lighting_time['offhour']) and lighting.output == True:
+		else:
 			GPIO.output(10, False)
 			logging.info("lighting is off")
 			lighting.output = False
@@ -73,7 +73,7 @@ def exit_func():
 
 
 def main():
-	logging.info("--the program if started--, time:"+str(datetime.datetime.now()))
+	logging.info("--the program is started--, time:"+str(datetime.datetime.now()))
 	watering_time = {'interval':7, 'acthour':12}
 	lighting_time = {'acthour':11, 'offhour':23}
 
