@@ -17,7 +17,6 @@ sudo apt-get install -y python-smbus i2c-tools
 `
 cd
 git clone https://github.com/PepMeister/raspberry-pi-growbox.git
-
 sudo echo "sudo python3 /home/pi/raspberry-pi-growbox/main.py" >> /etc/profile
 reboot
 `

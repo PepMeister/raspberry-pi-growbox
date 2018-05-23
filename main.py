@@ -28,7 +28,7 @@ def watering(watering_time):
 	bus = SMBus(1)
 
 	while(True):
-		if (watering.next_wat.day == datetime.datetime.now().day and watering_time['acthour'] == datetime.datetime.now().hour) and watering.output == False:
+		if (watering.next_wat == datetime.datetime.now().day and watering_time['acthour'] == datetime.datetime.now().hour) and watering.output == False:
 			watering.next_wat = datetime.datetime.now().day+watering_time['interval']
 			watering.output = True
 
@@ -59,7 +59,7 @@ def lighting(lighting_time):
 			GPIO.output(10, True)
 			logging.info("lighting is on")
 			lighting.output = True
-		else:
+		if datetime.datetime.now().hour == lighting_time['offhour'] and lighting.output == True:
 			GPIO.output(10, False)
 			logging.info("lighting is off")
 			lighting.output = False
