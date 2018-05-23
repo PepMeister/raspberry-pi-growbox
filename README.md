@@ -7,7 +7,7 @@
 * python-smbus
 * i2c-tools
 
-### Установка 
+### Установка библиотек 
 `
 sudo apt-get update
 sudo apt-get install -y python-smbus i2c-tools
