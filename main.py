@@ -3,6 +3,7 @@ import os
 import time
 import datetime
 import logging
+import atexit
 
 from smbus import SMBus
 from RPi import GPIO
@@ -20,14 +21,16 @@ def watering(watering_time):
 	wet_level = 200 # выставляем уровень влажности почвы, который необходимо достичь при поливе
 
 	watering.next_wat = datetime.datetime.now().day+watering_time['interval']
+	watering.output = False
 
 	addr = 0x48
 	channel = 0b1000010
 	bus = SMBus(1)
 
 	while(True):
-		if (watering.next_wat.day == datetime.datetime.now().day and watering_time['acthour'] == datetime.datetime.now().hour):
+		if (watering.next_wat.day == datetime.datetime.now().day and watering_time['acthour'] == datetime.datetime.now().hour) and watering.output == False:
 			watering.next_wat = datetime.datetime.now().day+watering_time['interval']
+			watering.output = True
 
 			bus.write_byte(addr, channel)
 			value = bus.read_byte(addr)
@@ -44,21 +47,33 @@ def watering(watering_time):
 				logging.info("watering is off")
 			else:
 				logging.warning("the plant is already watered")
-		time.sleep(1*60)
+		if  not (watering_time['acthour'] == datetime.datetime.now().hour):
+			watering.output = False
+		time.sleep(1*60*10)
 
 
 def lighting(lighting_time):
+	lighting.output = False #
 	while(True):
-		if (datetime.datetime.now().hour == lighting_time['acthour']):
+		if (datetime.datetime.now().hour == lighting_time['acthour']) and lighting.output == False:
 			GPIO.output(10, True)
-			logging.info("lighting is on"
-		if (datetime.datetime.now().hour == lighting_time['offhour']):
+			logging.info("lighting is on")
+			lighting.output = True
+		if (datetime.datetime.now().hour == lighting_time['offhour']) and lighting.output == True:
 			GPIO.output(10, False)
 			logging.info("lighting is off")
+			lighting.output = False
 		time.sleep(1*60)
 
 
+@atexit.register
+def exit_func():
+	logging.info("--the program is stopped--, time: "+str(datetime.datetime.now()))
+	GPIO.cleanup()
+
+
 def main():
+	logging.info("--the program if started--, time:"+str(datetime.datetime.now()))
 	watering_time = {'interval':7, 'acthour':12}
 	lighting_time = {'acthour':11, 'offhour':23}
 
