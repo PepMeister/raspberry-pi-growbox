@@ -21,7 +21,6 @@ sudo echo "sudo python3 /home/pi/raspberry-pi-growbox/main.py" >> /etc/profile
 reboot
 `
 
-
 ### Внешние модули
 
 * FC-28, Модуль датчика влажности почвы
